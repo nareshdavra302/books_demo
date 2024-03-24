@@ -16,6 +16,6 @@ export const getDBConnection = async () => {
         port: DB_PORT,
         database: DB_NAME
       });
-      const db = drizzle(connection);
+      const db = drizzle(connection, {logger: env.NODE_ENV == 'development'});
       return db;
 }

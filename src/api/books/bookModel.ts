@@ -6,7 +6,7 @@ import { int, text, mysqlTable, uniqueIndex, varchar, serial, date, timestamp } 
 export const booksModel = mysqlTable('books', {
   id: serial("id").primaryKey(),
   title: varchar('title', { length: 256 }),
-  auther: text('auther'),
+  author: text('auther'),
   publishedOn: date('published_on'),
   genre: varchar('genre', { length: 30 }),
   createdAt: timestamp('created_at'),
@@ -20,7 +20,7 @@ extendZodWithOpenApi(z);
 export const BookSchema = z.object({
     id: z.number(),
     title: z.string(),
-    auther: z.string(),
+    author: z.string(),
     publishedOn: z.date(),
     genre: z.string(),
     createdAt: z.date(),
@@ -32,12 +32,12 @@ export type Book = z.infer<typeof BookSchema>;
 
 const querySchema = z.object({
   title: z.string().optional(),
-  auther: z.string().optional(),
+  author: z.string().optional(),
   genre: z.string().optional(), 
   publishedFrom: z.date().optional(),
   publishedTo: z.date().optional(),
-  page: z.number().max(500).optional(),
-  pageSize: z.number().min(10).max(100).optional(),
+  page: z.string().refine((data) => !isNaN(Number(data)), 'ID must be a numeric value').optional(),
+  pageSize: z.string().refine((data) => !isNaN(Number(data)), 'ID must be a numeric value').optional(),
   sortBy: z.string().optional(),
   sortOrder: z.string().optional()
 })
