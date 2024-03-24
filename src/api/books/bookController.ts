@@ -22,7 +22,7 @@ export const bookController: Router = (() => {
   });
 
   router.get('/', async (req: Request, res: Response) => {
-    const title: string | undefined = req.query.title;
+    const title: string | undefined = req.query?.title;
     const auther: string | undefined = req.query?.auther;
 
     const serviceResponse = await bookService.findAll(title, auther);
