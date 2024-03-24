@@ -3,7 +3,7 @@ import mysql from "mysql2/promise";
 import { env } from "./envConfig";
 
 
-const getDBConnection = async () => {
+export const getDBConnection = async () => {
     const { DB_HOST,
         DB_PORT,
         DB_USER,

@@ -1,15 +1,15 @@
 import { StatusCodes } from 'http-status-codes';
 
-import { Book } from '@/api/books/bookModel';
+import { Book, BookDTO } from '@/api/books/bookModel';
 import { bookRepository } from '@/api/books/bookRepository';
 import { ResponseStatus, ServiceResponse } from '@/common/utils/commonRespose';
 import { logger } from '@/server';
 
 export const bookService = {
   // Retrieves all books from the database
-  findAll: async (title: string, auther: string): Promise<ServiceResponse<Book[] | null>> => {
+  findAll: async (bookDTO: BookDTO): Promise<ServiceResponse<Book[] | null>> => {
     try {
-      const books = await bookRepository.findAllAsync(title, auther);
+      const books = await bookRepository.findAllAsync(bookDTO);
       if (!books) {
         return new ServiceResponse(ResponseStatus.Failed, 'No Books found', null, StatusCodes.NOT_FOUND);
       }

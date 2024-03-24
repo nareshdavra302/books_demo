@@ -2,7 +2,7 @@ import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import express, { Request, Response, Router } from 'express';
 import { z } from 'zod';
 
-import { GetBookSchema, BookSchema } from '@/api/books/bookModel';
+import { GetBookSchema, BookSchema, BookDTO } from '@/api/books/bookModel';
 import { bookService } from '@/api/books/bookService';
 import { createApiResponse } from '@/api-docs/openAPIResponseBuilders';
 import { handleServiceResponse, validateRequest } from '@/common/utils/httphandlers';
@@ -23,9 +23,9 @@ export const bookController: Router = (() => {
 
   router.get('/', validateRequest(GetBookSchema),async (req: Request, res: Response) => {
     
-    const {title,auther}: any = req.query;
+    const bookDTO: BookDTO = req.query;
 
-    const serviceResponse = await bookService.findAll(title, auther);
+    const serviceResponse = await bookService.findAll(bookDTO);
     handleServiceResponse(serviceResponse, res);
   });
 

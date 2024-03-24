@@ -3,12 +3,12 @@ import { z } from 'zod';
 import { int, text, mysqlTable, uniqueIndex, varchar, serial, date, timestamp } from 'drizzle-orm/mysql-core';
 // declaring enum in database
 
-export const books = mysqlTable('books', {
+export const booksModel = mysqlTable('books', {
   id: serial("id").primaryKey(),
   title: varchar('title', { length: 256 }),
   auther: text('auther'),
   publishedOn: date('published_on'),
-  genre: varchar('genre', { length: 256 }),
+  genre: varchar('genre', { length: 30 }),
   createdAt: timestamp('created_at'),
   updatedAt: timestamp('updated_at'),
 }, (books) => ({
@@ -30,6 +30,20 @@ export const BookSchema = z.object({
 export type Book = z.infer<typeof BookSchema>;
 
 
+const querySchema = z.object({
+  title: z.string().optional(),
+  auther: z.string().optional(),
+  genre: z.string().optional(), 
+  publishedFrom: z.date().optional(),
+  publishedTo: z.date().optional(),
+  page: z.number().max(500).optional(),
+  pageSize: z.number().min(10).max(100).optional(),
+  sortBy: z.string().optional(),
+  sortOrder: z.string().optional()
+})
+
+export type BookDTO = z.infer<typeof querySchema>;
+
 // Input Validation for 'GET books/:id' endpoint
 export const GetBookSchema = z.object({
   params: z.object({ id: z
@@ -37,13 +51,6 @@ export const GetBookSchema = z.object({
     .refine((data) => !isNaN(Number(data)), 'ID must be a numeric value')
     .transform(Number)
     .refine((num) => num > 0, 'ID must be a positive number').optional() }),
-  query: z.object({
-    title: z.string().optional(),
-    auther: z.string().optional(),
-    genre: z.string().optional(), 
-    publishedFrom: z.date().optional(),
-    publishedTo: z.date().optional(),
-    page: z.number().max(500).optional(),
-    pageSize: z.number().min(10).max(100).optional(),
-  }).strict()
+  query: querySchema.strict()
 });
+
