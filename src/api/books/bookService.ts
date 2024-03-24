@@ -7,7 +7,7 @@ import { logger } from '@/server';
 
 export const bookService = {
   // Retrieves all books from the database
-  findAll: async (title: string| undefined, auther: string| undefined): Promise<ServiceResponse<Book[] | null>> => {
+  findAll: async (title: string, auther: string): Promise<ServiceResponse<Book[] | null>> => {
     try {
       const books = await bookRepository.findAllAsync(title, auther);
       if (!books) {

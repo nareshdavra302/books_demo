@@ -9,9 +9,9 @@ export const books: Book[] = [
 ];
 
 export const bookRepository = {
-  findAllAsync: async (title: string| undefined, auther: string| undefined): Promise<Book[]> => {
+  findAllAsync: async (title: string, auther: string): Promise<Book[]> => {
 
-    if(title) {
+      if(title) {
         return books.filter(b => b.title.toLowerCase().includes(title.toLowerCase()))
     }
 

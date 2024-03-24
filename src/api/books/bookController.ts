@@ -21,9 +21,9 @@ export const bookController: Router = (() => {
     responses: createApiResponse(z.array(BookSchema), 'Success'),
   });
 
-  router.get('/', async (req: Request, res: Response) => {
-    const title: string | undefined = req.query?.title;
-    const auther: string | undefined = req.query?.auther;
+  router.get('/', validateRequest(GetBookSchema),async (req: Request, res: Response) => {
+    
+    const {title,auther}: any = req.query;
 
     const serviceResponse = await bookService.findAll(title, auther);
     handleServiceResponse(serviceResponse, res);
