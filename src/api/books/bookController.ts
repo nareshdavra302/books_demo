@@ -18,6 +18,7 @@ export const bookController: Router = (() => {
     method: 'get',
     path: '/books',
     tags: ['Book'],
+    request: { query: GetBookSchema.shape.query },
     responses: createApiResponse(z.array(BookSchema), 'Success'),
   });
 
@@ -33,7 +34,7 @@ export const bookController: Router = (() => {
     method: 'get',
     path: '/books/{id}',
     tags: ['Book'],
-    request: { params: GetBookSchema.shape.params, query: GetBookSchema.shape.query },
+    request: { params: GetBookSchema.shape.params },
     responses: createApiResponse(BookSchema, 'Success'),
   });
 
